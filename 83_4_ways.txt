@@ -1,0 +1,71 @@
+a=open('matrix.txt')
+a_list=[]
+m=[]
+
+for i in a:
+    a_list.append(i.split(","))
+    
+for i in a_list:
+    temp_list=[]
+    for j in i:
+        temp_list.append(int(j))
+    m.append(temp_list)
+
+#m=[[131,673,234,103,18],[201,96,342,965,150],[630,803,746,422,111],[537,699,497,121,956],[805,732,524,37,331]]
+
+
+the_min=10**6
+
+for i in m:
+    if min(i)<the_min:
+        the_min=min(i)
+
+H=[]
+
+for i in range(len(m)):
+    temp_list=[]
+    for j in range(len(m)):
+        temp_list.append(the_min*(len(m)*2-i-j-1))
+    H.append(temp_list)
+  
+        
+
+
+def f():
+    CLOSED={}
+    OPEN={(0,0):0}
+    i=0
+    j=0
+    while True:
+        if len(OPEN)==0:
+            return False
+        minimum=10**6
+        for i2 in OPEN:   
+            if OPEN[i2]<minimum:
+                n=i2
+                minimum=OPEN[n]
+        CLOSED[n]=OPEN[n]
+        del(OPEN[n])
+            
+        i=n[0]
+        j=n[1]
+        if i+j!=0:
+            the_minimum=10**6
+            for x, y in (-1,0), (0,-1), (1,0), (0,1): 
+                if 0 <= i+x < len(m) and 0 <= j+y < (len(m)):
+                    if (i+x,j+y) in CLOSED:
+                        if CLOSED[(i+x,j+y)]<the_minimum:
+                            t1=i+x ; t2=j+y
+                            the_minimum=CLOSED[(i+x,j+y)]
+            m[n[0]][n[1]]+=m[t1][t2]
+                            
+                        
+        for x, y in (-1,0), (0,-1), (1,0), (0,1): 
+            if 0 <= i+x < len(m) and 0 <= j+y < (len(m)):
+                if (i+x, j+y) not in OPEN:
+                    if (i+x, j+y) not in CLOSED:
+                        if (i+x, j+y)==(len(m)-1,len(m)-1):
+                            print(m[n[0]][n[1]]+m[i+x][j+y])
+                        OPEN[(i+x,j+y)]=H[i+x][j+y]+m[n[0]][n[1]]+m[i+x][j+y]
+        
+f()
